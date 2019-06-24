@@ -6,12 +6,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath("com.android.tools.build:gradle:3.4.0")
     }
 }
 
 allprojects {
     repositories {
+        mavenLocal()
+        google()
+        jcenter()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
         maven { url 'https://jitpack.io' }
     }
 }
@@ -41,6 +48,7 @@ android {
 }
 
 dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.facebook.react:react-native:+'
     implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
     //网络请求的实现一

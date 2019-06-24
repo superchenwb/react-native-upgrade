@@ -53,7 +53,7 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void checkUpgrade(String updateUrl, Boolean show) {
-      XUpdate.newBuild(reactContext.getApplicationContext())
+      XUpdate.newBuild(reactContext.getCurrentActivity())
               .updateUrl(updateUrl)
               .themeColor(reactContext.getResources().getColor(R.color.update_theme_color))
               .topResId(R.mipmap.bg_update_top)
