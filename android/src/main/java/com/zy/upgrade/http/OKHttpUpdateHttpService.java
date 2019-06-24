@@ -1,7 +1,8 @@
 package com.zy.upgrade.http;
 
-import android.app.Application;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
@@ -10,6 +11,7 @@ import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -25,8 +27,14 @@ import okhttp3.Response;
  */
 public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
-    public OKHttpUpdateHttpService(Application application) {
-        OkHttpUtils.getInstance().sslSocketFactory("cers/cert.cer", application).timeout(20000);
+    public OKHttpUpdateHttpService(Context context) {
+
+        Map<String, String> headerParamsMap = new HashMap<>();
+        headerParamsMap.put("token", "eyJhbGciOiJIUzI1NiJ9.eyJlbnRfaWQiOiIyIiwicGFzc3dvcmQiOiJhYTEyMzQ1NiIsInN5c3RlbWlkIjoiMyIsInBob25lbnVtYmVyIjoiMTUyNzE1ODU5MDYiLCJleHAiOjE1NjIyMjExOTQ2MDMsInVzZXJpZCI6OTEsInByb2plY3RpZCI6MSwidXNlcm5hbWUiOiLplb_msZ_nhorppbbonJwifQ.Y1QvAVydW0X1veTMgqKveYqQpsgYMo9MLQxZt54XiUk");
+        OkHttpUtils.getInstance()
+                .sslSocketFactory("cers/cert.cer", context)
+                .addInterceptor(new HeaderInterceptor(headerParamsMap))
+                .timeout(20000);
     }
 
     @Override
@@ -38,11 +46,13 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Response response, Exception e, int id) {
+                        Log.d("OKHttpUpdateHttpService", e.getMessage());
                         callBack.onError(e);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        Log.d("OKHttpUpdateHttpService", response);
                         callBack.onSuccess(response);
                     }
                 });

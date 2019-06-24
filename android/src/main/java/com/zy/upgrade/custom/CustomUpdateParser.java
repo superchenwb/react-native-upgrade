@@ -20,10 +20,6 @@ import com.zy.upgrade.entity.CustomResult;
 public class CustomUpdateParser implements IUpdateParser {
     private boolean showToast;
     private final ReactApplicationContext reactContext;
-    public CustomUpdateParser(ReactApplicationContext reactContext) {
-        this.showToast = false;
-        this.reactContext = reactContext;
-    }
 
     public CustomUpdateParser(ReactApplicationContext reactContext, boolean showToast) {
         this.showToast = showToast;
