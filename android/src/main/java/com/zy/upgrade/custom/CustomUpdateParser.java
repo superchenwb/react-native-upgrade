@@ -1,5 +1,6 @@
 package com.zy.upgrade.custom;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -34,9 +35,11 @@ public class CustomUpdateParser implements IUpdateParser {
             UpdateEntity updateEntity = new UpdateEntity();
             if (result.getUpdatestatus() == CheckVersionResult.NO_NEW_VERSION) {
                 updateEntity.setHasUpdate(false);
+                Log.d("CustomUpdateParser", String.valueOf(showToast));
                 if(showToast) {
-                    Toast tost = Toast.makeText(reactContext, null, Toast.LENGTH_SHORT);
-                    tost.setText("当前已是最新版本");
+                    Toast toast = Toast.makeText(reactContext, null, Toast.LENGTH_SHORT);
+                    toast.setText("当前已是最新版本");
+                    toast.show();
                 }
             } else {
                 if (result.getUpdatestatus() == CheckVersionResult.HAVE_NEW_VERSION_FORCED_UPLOAD) {
