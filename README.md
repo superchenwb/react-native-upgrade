@@ -3,11 +3,11 @@
 
 ## Getting started
 
-`$ npm install react-native-upgrade --save`
+`$ npm install react-native-zy-upgrade --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-upgrade`
+`$ react-native link react-native-zy-upgrade`
 
 ### Manual installation
 
@@ -30,7 +30,7 @@
 
 ## Usage
 ```javascript
-import RNUpgrade from 'react-native-upgrade';
+import RNUpgrade from 'react-native-zy-upgrade';
 
 // TODO: What to do with the module?
 RNUpgrade;
