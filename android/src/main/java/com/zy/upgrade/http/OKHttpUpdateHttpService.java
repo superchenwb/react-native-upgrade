@@ -27,14 +27,11 @@ import okhttp3.Response;
  */
 public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
-    public OKHttpUpdateHttpService(Context context) {
-
-//        Map<String, String> headerParamsMap = new HashMap<>();
-//        headerParamsMap.put("token", "eyJhbGciOiJIUzI1NiJ9.eyJlbnRfaWQiOiIyIiwicGFzc3dvcmQiOiJhYTEyMzQ1NiIsInN5c3RlbWlkIjoiMyIsInBob25lbnVtYmVyIjoiMTUyNzE1ODU5MDYiLCJleHAiOjE1NjIyMjExOTQ2MDMsInVzZXJpZCI6OTEsInByb2plY3RpZCI6MSwidXNlcm5hbWUiOiLplb_msZ_nhorppbbonJwifQ.Y1QvAVydW0X1veTMgqKveYqQpsgYMo9MLQxZt54XiUk");
-        OkHttpUtils.getInstance()
-                .sslSocketFactory("cers/cert.cer", context)
-//                .addInterceptor(new HeaderInterceptor(headerParamsMap))
-                .timeout(20000);
+    public OKHttpUpdateHttpService(Context context, String cerPath) {
+        OkHttpUtils okHttpUtils = OkHttpUtils.getInstance().timeout(20000);
+        if(cerPath != null && "".equals(cerPath)) {
+            okHttpUtils.sslSocketFactory(cerPath, context);
+        }
     }
 
     @Override

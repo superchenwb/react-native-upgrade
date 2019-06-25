@@ -30,7 +30,7 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
     return "RNUpgrade";
   }
 
-  public static void init(Application application) {
+  public static void init(Application application, String cerPath) {
     XUpdate.get()
             .debug(true)
             .isWifiOnly(true)                                               //默认设置只在wifi下检查版本更新
@@ -47,7 +47,7 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
               }
             })
             .supportSilentInstall(true)                                     //设置是否支持静默安装，默认是true
-            .setIUpdateHttpService(new OKHttpUpdateHttpService(application))           //这个必须设置！实现网络请求功能。
+            .setIUpdateHttpService(new OKHttpUpdateHttpService(application, cerPath))           //这个必须设置！实现网络请求功能。
             .init(application);                                                    //这个必须初始化
   }
 
