@@ -1,7 +1,7 @@
 
 {
   "name": "react-native-zy-upgrade",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A ReactNative update for Android",
   "main": "index.js",
   "scripts": {
