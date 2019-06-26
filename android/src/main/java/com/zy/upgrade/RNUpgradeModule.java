@@ -41,7 +41,7 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
       if(cerPath == null) {
           cerPath = "cers/cert.cer";
       }
-      mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, cerPath, token);
+      mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, token, cerPath);
       int versionCode = UpdateUtils.getVersionCode(reactContext);
     XUpdate.get()
             .debug(BuildConfig.DEBUG)
