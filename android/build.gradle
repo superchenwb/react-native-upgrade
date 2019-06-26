@@ -50,7 +50,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.github.superchenwb:XUpdate:1.0.10'
+    implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
     //网络请求的实现一
     implementation 'com.qianwen:okhttp-utils:3.8.0'
     implementation 'com.alibaba:fastjson:1.1.70.android'
