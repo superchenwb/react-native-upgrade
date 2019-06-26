@@ -1,7 +1,6 @@
 
 package com.zy.upgrade;
 
-import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,13 +35,13 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void init(String url, String token, String cerPath) {
-      // 防止多次初始化
-      if(mIUpdateHttpService != null) return;
-      if(cerPath == null) {
-          cerPath = "cers/cert.cer";
-      }
-      mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, token, cerPath);
-      int versionCode = UpdateUtils.getVersionCode(reactContext);
+
+    if(cerPath == null) {
+      cerPath = "cers/cert.cer";
+    }
+    mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, token, cerPath);
+    int versionCode = UpdateUtils.getVersionCode(reactContext);
+    Log.d("RNUpgradeModule init", url + "===" + token);
     XUpdate.get()
             .debug(BuildConfig.DEBUG)
             .isWifiOnly(false)                                               //默认设置只在wifi下检查版本更新
@@ -66,6 +65,7 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void checkUpgrade(String updateUrl, Boolean show) {
+      Log.d("checkUpgrade", updateUrl + "===" + show);
       XUpdate.newBuild(getCurrentActivity())
               .updateUrl(updateUrl)
               .themeColor(reactContext.getResources().getColor(R.color.update_theme_color))
