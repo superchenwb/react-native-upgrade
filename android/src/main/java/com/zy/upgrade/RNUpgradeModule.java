@@ -34,6 +34,8 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void init(String url, String token, String cerPath) {
+      // 防止多次初始化
+      if(XUpdate.getContext() != null) return;
       if(cerPath == null) {
           cerPath = "cers/cert.cer";
       }
