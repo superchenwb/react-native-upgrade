@@ -28,8 +28,18 @@ public class APKInstallListener extends DefaultInstallListener {
     @Override
     public void onInstallApkSuccess() {
         Log.d("APKInstallListener", "安装成功");
-//        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
 //        params.put("versioncode", UpdateUtils.getVersionCode(application))
-        httpService.asyncGet(url, null, null);
+        httpService.asyncGet(url, params, new IUpdateHttpService.Callback() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("APKInstallListener", "apk安装成功后调用服务器更新记录成功");
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Log.e("APKInstallListener", "apk安装成功后调用服务器更新记录失败");
+            }
+        });
     }
 }
