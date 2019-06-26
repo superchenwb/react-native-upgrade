@@ -27,11 +27,14 @@ import okhttp3.Response;
  */
 public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
-    public OKHttpUpdateHttpService(Context context, String cerPath) {
+    public OKHttpUpdateHttpService(Context context, String token, String cerPath) {
         OkHttpUtils okHttpUtils = OkHttpUtils.getInstance().timeout(20000);
+        Map<String, String> headerParamsMap = new HashMap<>();
+        headerParamsMap.put("token", token);
         if(cerPath != null && "".equals(cerPath)) {
             okHttpUtils.sslSocketFactory(cerPath, context);
         }
+        okHttpUtils.addInterceptor(new HeaderInterceptor(headerParamsMap));
     }
 
     @Override

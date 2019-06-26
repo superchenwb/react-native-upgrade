@@ -10,15 +10,17 @@ import com.facebook.react.bridge.ReactMethod;
 import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.entity.UpdateError;
 import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
+import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.zy.upgrade.custom.CustomUpdateParser;
 import com.zy.upgrade.http.OKHttpUpdateHttpService;
+import com.zy.upgrade.listener.APKInstallListener;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
 public class RNUpgradeModule extends ReactContextBaseJavaModule {
 
-  private final ReactApplicationContext reactContext;
+    private final ReactApplicationContext reactContext;
 
   public RNUpgradeModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -30,14 +32,20 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
     return "RNUpgrade";
   }
 
-  public static void init(Application application, String cerPath) {
+  @ReactMethod
+  public void init(String url, String token, String cerPath) {
+      if(cerPath == null) {
+          cerPath = "cers/cert.cer";
+      }
+      IUpdateHttpService mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, cerPath, token);
+      int versionCode = UpdateUtils.getVersionCode(reactContext);
     XUpdate.get()
             .debug(BuildConfig.DEBUG)
             .isWifiOnly(false)                                               //默认设置只在wifi下检查版本更新
             .isGet(true)                                                    //默认设置使用get请求检查版本
             .isAutoMode(false)                                              //默认设置非自动模式，可根据具体使用配置
-            .param("versionCode", UpdateUtils.getVersionCode(application))         //设置默认公共请求参数
-            .param("appKey", application.getPackageName())
+            .param("versionCode", versionCode)         //设置默认公共请求参数
+            .param("appKey", reactContext.getPackageName())
             .setOnUpdateFailureListener(new OnUpdateFailureListener() {     //设置版本更新出错的监听
               @Override
               public void onFailure(UpdateError error) {
@@ -47,8 +55,9 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
               }
             })
             .supportSilentInstall(true)                                     //设置是否支持静默安装，默认是true
-            .setIUpdateHttpService(new OKHttpUpdateHttpService(application, cerPath))           //这个必须设置！实现网络请求功能。
-            .init(application);                                                    //这个必须初始化
+            .setIUpdateHttpService(mIUpdateHttpService)           //这个必须设置！实现网络请求功能。
+            .setOnInstallListener(new APKInstallListener(mIUpdateHttpService, url))
+            .init(reactContext);                                                    //这个必须初始化
   }
 
   @ReactMethod
