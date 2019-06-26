@@ -30,7 +30,9 @@ public class HeaderInterceptor implements Interceptor {
             Iterator iterator = headerParamsMap.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry entry = (Map.Entry) iterator.next();
-                headerBuilder.add((String) entry.getKey(), (String) entry.getValue());
+                if(entry.getValue() != null) {
+                    headerBuilder.add((String) entry.getKey(), (String) entry.getValue());
+                }
             }
             requestBuilder.headers(headerBuilder.build());
         }
