@@ -22,6 +22,8 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
+    IUpdateHttpService mIUpdateHttpService;
+
   public RNUpgradeModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
@@ -35,11 +37,11 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void init(String url, String token, String cerPath) {
       // 防止多次初始化
-      if(XUpdate.getContext() != null) return;
+      if(mIUpdateHttpService != null) return;
       if(cerPath == null) {
           cerPath = "cers/cert.cer";
       }
-      IUpdateHttpService mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, cerPath, token);
+      mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, cerPath, token);
       int versionCode = UpdateUtils.getVersionCode(reactContext);
     XUpdate.get()
             .debug(BuildConfig.DEBUG)
