@@ -42,7 +42,7 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
     }
     mIUpdateHttpService = new OKHttpUpdateHttpService(reactContext, token, cerPath);
     int versionCode = UpdateUtils.getVersionCode(reactContext);
-    Log.d("RNUpgradeModule init", url + "   ===token" + token);
+    Log.d("RNUpgradeModule init", "token" + token);
     XUpdate.get()
             .debug(BuildConfig.DEBUG)
             .isWifiOnly(false)                                               //默认设置只在wifi下检查版本更新
@@ -60,13 +60,12 @@ public class RNUpgradeModule extends ReactContextBaseJavaModule {
             })
             .supportSilentInstall(true)                                     //设置是否支持静默安装，默认是true
             .setIUpdateHttpService(mIUpdateHttpService)           //这个必须设置！实现网络请求功能。
-            .setOnInstallListener(new APKInstallListener(mIUpdateHttpService, url))
+            .setOnInstallListener(new APKInstallListener(mIUpdateHttpService, url))     // apk安装监听
             .init((Application) reactContext.getApplicationContext());                                                    //这个必须初始化
   }
 
   @ReactMethod
   public void checkUpgrade(String updateUrl, Boolean show) {
-      Log.d("checkUpgrade", updateUrl + "   ===show" + show);
       XUpdate.newBuild(getCurrentActivity())
               .updateUrl(updateUrl)
               .themeColor(reactContext.getResources().getColor(R.color.update_theme_color))

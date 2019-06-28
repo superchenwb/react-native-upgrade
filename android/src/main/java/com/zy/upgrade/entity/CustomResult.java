@@ -29,6 +29,28 @@ public class CustomResult {
 
     private String apkmd5;
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    // 后端接口返回状态
+    private Integer status;
+
+    // 后端接口返回状态信息
+    private String info;
+
     public Integer getId() {
         return id;
     }

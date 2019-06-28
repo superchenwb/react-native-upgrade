@@ -5,13 +5,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 
+import com.alibaba.fastjson.JSON;
 import com.xuexiang.xupdate.proxy.IUpdateHttpService;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zy.upgrade.entity.CustomResult;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -29,7 +30,6 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
 
     public OKHttpUpdateHttpService(Context context, String token, String cerPath) {
         OkHttpUtils okHttpUtils = OkHttpUtils.getInstance().timeout(20000);
-        Log.d("OKHttpUpdateHttpService", token);
         if(cerPath != null && "".equals(cerPath)) {
             okHttpUtils.sslSocketFactory(cerPath, context);
         }
@@ -52,7 +52,13 @@ public class OKHttpUpdateHttpService implements IUpdateHttpService {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.d("OKHttpUpdateHttpService", response);
-                        callBack.onSuccess(response);
+                        CustomResult customResult = JSON.parseObject(response, CustomResult.class);
+                        if(customResult.getStatus() == 1) {
+                            callBack.onSuccess(response);
+                        } else {
+                            callBack.onError(new Error(customResult.getInfo()));
+                        }
+
                     }
                 });
     }
